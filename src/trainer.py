@@ -315,22 +315,23 @@ class condGANTrainer(object):
                 # do not need to compute gradient for Ds
                 # self.set_requires_grad_value(netsD, False)
                 netG.zero_grad()
-                errG_total, G_logs = generator_loss(
-                    netsD,
-                    image_encoder,
-                    fake_imgs,
-                    real_labels,
-                    words_embs,
-                    sent_emb,
-                    match_labels,
-                    cap_lens,
-                    class_ids,
-                )
+                G_logs=""
+                # errG_total, G_logs = generator_loss(
+                #     netsD,
+                #     image_encoder,
+                #     fake_imgs,
+                #     real_labels,
+                #     words_embs,
+                #     sent_emb,
+                #     match_labels,
+                #     cap_lens,
+                #     class_ids,
+                # )
                 kl_loss = KL_loss(mu, logvar)
-                errG_total += kl_loss
+                # errG_total += kl_loss
                 G_logs += "kl_loss: %.2f " % kl_loss.item()
                 # backward and update parameters
-                errG_total.backward()
+                # errG_total.backward()
                 optimizerG.step()
                 for p, avg_p in zip(netG.parameters(), avg_param_G):
                     avg_p.mul_(0.999).add_(0.001, p.data)
