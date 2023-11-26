@@ -51,7 +51,7 @@ def gen_example(wordtoix, algo, text):
     name = "output"
     key = name[(name.rfind("/") + 1) :]
     data_dic[key] = [cap_array, cap_lens, sorted_indices]
-    print(data_dic)
+    # print(data_dic)
     algo.gen_example(data_dic)
 
 

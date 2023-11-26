@@ -168,7 +168,7 @@ class TextDataset(data.Dataset):
                     tokens = tokenizer.tokenize(cap.lower())
                     # print('tokens', tokens)
                     if len(tokens) == 0:
-                        print("cap", cap)
+                        # print("cap", cap)
                         continue
 
                     tokens_new = []
@@ -312,8 +312,8 @@ class TextDataset(data.Dataset):
     def __getitem__(self, index):
         #
         key = self.filenames[index]
-        print(self.class_id)
-        print(self.filenames)
+        # print(self.class_id)
+        # print(self.filenames)
         cls_id = self.class_id[index]
         #
         if self.bbox is not None:
