@@ -593,6 +593,14 @@ class D_GET_LOGITS(nn.Module):
             c_code = c_code.view(-1, self.ef_dim, 1, 1)
             c_code = c_code.repeat(1, 1, 4, 4)
             # state size (ngf+egf) x 4 x 4
+            h_code = h_code.unsqueeze(1)
+            if h_code.dim() > c_code.dim():
+                # Reduce dimensions of h_code
+                h_code = h_code.squeeze()  # Modify this based on the actual scenario
+
+            elif h_code.dim() < c_code.dim():
+                # Reduce dimensions of c_code
+                c_code = c_code.squeeze() 
             h_c_code = torch.cat((h_code, c_code), 1)
             # state size ngf x in_size x in_size
             h_c_code = self.jointConv(h_c_code)
