@@ -1,8 +1,8 @@
 from __future__ import print_function
 
-from src.misc.config import cfg, cfg_from_file
-from src.dataset import TextDataset
-from src.trainer import condGANTrainer as trainer
+from misc.config import cfg, cfg_from_file
+from dataset import TextDataset
+from trainer import condGANTrainer as trainer
 
 import os
 import sys
@@ -27,7 +27,7 @@ def parse_args():
         "--cfg",
         dest="cfg_file",
         help="optional config file",
-        default="cfg/bird_attn2.yml",
+        default="cfg/bird_attn.yml",
         type=str,
     )
     parser.add_argument("--gpu", dest="gpu_id", type=int, default=-1)
