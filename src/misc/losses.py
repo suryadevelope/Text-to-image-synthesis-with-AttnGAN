@@ -49,7 +49,7 @@ def sent_loss(cnn_code, rnn_code, labels, class_ids,
     # --> batch_size x batch_size
     scores0 = scores0.squeeze()
     if class_ids is not None:
-        scores0.data.masked_fill_(masks, -float('inf'))
+        scores0.data.masked_fill_(masks.bool(), -float('inf'))
     scores1 = scores0.transpose(0, 1)
     if labels is not None:
         loss0 = nn.CrossEntropyLoss()(scores0, labels)
