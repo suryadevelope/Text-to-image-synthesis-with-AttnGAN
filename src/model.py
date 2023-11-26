@@ -584,7 +584,7 @@ class D_GET_LOGITS(nn.Module):
             self.jointConv = Block3x3_leakRelu(ndf * 8 + nef, ndf * 8)
 
         self.outlogits = nn.Sequential(
-            nn.Conv2d(ndf * 8, 1, kernel_size=4, stride=4), nn.Sigmoid()
+            nn.Conv2d(ndf * 8, 1, kernel_size=2, stride=4), nn.Sigmoid()
         )
 
     def forward(self, h_code, c_code=None):
@@ -592,7 +592,7 @@ class D_GET_LOGITS(nn.Module):
             # conditioning output
             c_code = c_code.view(-1, self.ef_dim, 1, 1)
             c_code = c_code.repeat(1, 1, 4, 4)
-            # state size (ngf+egf) x 4 x 4
+           # state size (ngf+egf) x 4 x 4
             h_code = h_code.unsqueeze(1)
             if h_code.dim() > c_code.dim():
                 # Reduce dimensions of h_code
@@ -601,8 +601,31 @@ class D_GET_LOGITS(nn.Module):
             elif h_code.dim() < c_code.dim():
                 # Reduce dimensions of c_code
                 c_code = c_code.squeeze() 
+
+            # If the sizes are different in dimension 1, adjust one of the tensors to match the other
+            if h_code.size(1) != c_code.size(1):
+                min_size = min(h_code.size(1), c_code.size(1))
+                h_code = h_code[:, :min_size]
+                c_code = c_code[:, :min_size]
+            if h_code.size()[2:] != c_code.size()[2:]:
+              # If sizes don't match, adjust one of the tensors to match the other
+              min_size = (min(h_code.size(2), c_code.size(2)), min(h_code.size(3), c_code.size(3)))
+              h_code = h_code[:, :, :min_size[0], :min_size[1]]
+              c_code = c_code[:, :, :min_size[0], :min_size[1]]
+         
             h_c_code = torch.cat((h_code, c_code), 1)
             # state size ngf x in_size x in_size
+
+            if h_c_code.size(1) != 768:
+              # Modify the input tensor to match the expected number of channels
+              # You might perform operations to change the number of channels here
+              # For example, you could add more channels or reshape the tensor
+              
+              # Example: Add zero-initialized channels to match the expected number (for demonstration)
+              diff_channels = 768 - h_c_code.size(1)
+              extra_channels = torch.zeros(h_c_code.size(0), diff_channels, h_c_code.size(2), h_c_code.size(3))
+              h_c_code = torch.cat((h_c_code, extra_channels), dim=1)
+              
             h_c_code = self.jointConv(h_c_code)
         else:
             h_c_code = h_code

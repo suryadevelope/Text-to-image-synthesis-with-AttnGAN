@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 
 from nltk.tokenize import RegexpTokenizer
 from collections import defaultdict
-from misc.config import cfg
+from config import cfg
 
 import torch
 import torch.utils.data as data
@@ -76,8 +76,6 @@ def get_imgs(img_path, imsize, bbox=None, transform=None, normalize=None):
         ret = [normalize(img)]
     else:
         for i in range(cfg.TREE.BRANCH_NUM):
-            print(len(imsize))
-            print(cfg.TREE.BRANCH_NUM)
             if i < (cfg.TREE.BRANCH_NUM - 1):
                 re_img = transforms.Resize(64)(img)
             else:
