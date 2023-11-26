@@ -122,7 +122,7 @@ def words_loss(img_features, words_emb, labels,
 
     similarities = similarities * cfg.TRAIN.SMOOTH.GAMMA3
     if class_ids is not None:
-        similarities.data.masked_fill_(masks, -float('inf'))
+        similarities.data.masked_fill_(masks.bool(), -float('inf'))
     similarities1 = similarities.transpose(0, 1)
     if labels is not None:
         loss0 = nn.CrossEntropyLoss()(similarities, labels)
