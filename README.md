@@ -13,7 +13,6 @@ Referenced from: https://github.com/taoxugit/AttnGAN
 
 ![](https://github.com/Gladiator07/Text-to-image-synthesis-with-AttnGAN/blob/main/img/demo-1.png)
 
-
 # AttnGAN
 
 Pytorch implementation for reproducing AttnGAN results in the paper [AttnGAN: Fine-Grained Text to Image Generation

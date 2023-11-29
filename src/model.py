@@ -624,6 +624,13 @@ class D_GET_LOGITS(nn.Module):
               # Example: Add zero-initialized channels to match the expected number (for demonstration)
               diff_channels = 768 - h_c_code.size(1)
               extra_channels = torch.zeros(h_c_code.size(0), diff_channels, h_c_code.size(2), h_c_code.size(3))
+              device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+              # Move extra_channels tensor to the same device as h_c_code
+              extra_channels = extra_channels.to(device)
+
+              # Now, ensure that h_c_code is also on the same device
+              h_c_code = h_c_code.to(device)
               h_c_code = torch.cat((h_c_code, extra_channels), dim=1)
               
             h_c_code = self.jointConv(h_c_code)
