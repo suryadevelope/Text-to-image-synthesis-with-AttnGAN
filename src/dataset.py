@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 
 from nltk.tokenize import RegexpTokenizer
 from collections import defaultdict
-from misc.config import cfg
+from config import cfg
 
 import torch
 import torch.utils.data as data
@@ -76,6 +76,8 @@ def get_imgs(img_path, imsize, bbox=None, transform=None, normalize=None):
         ret = [normalize(img)]
     else:
         for i in range(cfg.TREE.BRANCH_NUM):
+            print(len(imsize))
+            print(cfg.TREE.BRANCH_NUM)
             if i < (cfg.TREE.BRANCH_NUM - 1):
                 re_img = transforms.Resize(64)(img)
             else:
@@ -168,7 +170,7 @@ class TextDataset(data.Dataset):
                     tokens = tokenizer.tokenize(cap.lower())
                     # print('tokens', tokens)
                     if len(tokens) == 0:
-                        # print("cap", cap)
+                        print("cap", cap)
                         continue
 
                     tokens_new = []
@@ -312,8 +314,8 @@ class TextDataset(data.Dataset):
     def __getitem__(self, index):
         #
         key = self.filenames[index]
-        # print(self.class_id)
-        # print(self.filenames)
+        print(self.class_id)
+        print(self.filenames)
         cls_id = self.class_id[index]
         #
         if self.bbox is not None:
